@@ -75,27 +75,33 @@ WSGI_APPLICATION = 'CarryUApi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+#准备正式的时候迁移再用
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'test',
+#        'USER': 'root',
+#        'PASSWORD': '',
+#        'HOST': '60.205.183.171',
+#        'OPTIONS': {
+#            'init_command': 'SET default_storage_engine=INNODB,character_set_connection=utf8,collation_connection=utf8_unicode_ci;SET NAMES \'utf8\';'},
+#        'TEST': {
+#            'NAME': 'test_ots',
+#            'CHARSET': 'utf8',
+#            'COLLATION': 'utf8_general_ci',
+#            'OPTIONS': {
+#                'init_command': 'DROP DATABASE IF EXISTS `test_ots`'
+#            },
+#        },
+#    }
+#
+#}
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'carryU',
-        'USER': 'user',
-        'PASSWORD': 'user',
-        'HOST': 'IP',
-        'OPTIONS': {
-            'init_command': 'SET default_storage_engine=INNODB,character_set_connection=utf8,collation_connection=utf8_unicode_ci;SET NAMES \'utf8\';'},
-        'TEST': {
-            'NAME': 'test_ots',
-            'CHARSET': 'utf8',
-            'COLLATION': 'utf8_general_ci',
-            'OPTIONS': {
-                'init_command': 'DROP DATABASE IF EXISTS `test_ots`'
-            },
-        },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -130,3 +136,6 @@ STATICFILES_DIRS = [
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'upload/')
 MEDIA_URL = '/upload/'
+
+#access static files by url
+STATIC_URL = '/static/'
