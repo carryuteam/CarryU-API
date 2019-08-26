@@ -142,4 +142,4 @@ STATIC_URL = '/static/'
 
 WX_APPID = ""
 
-WX_SECRET = "1"
+WX_SECRET = ""
