@@ -13,6 +13,7 @@ class User(models.Model):
     grade=models.IntegerField()
     coin=models.IntegerField()
 
+
 class Resource(models.Model):
     resid=models.AutoField(primary_key=True)
     author=models.CharField(max_length=50)
