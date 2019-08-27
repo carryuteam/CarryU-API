@@ -5,13 +5,12 @@ from rest_framework_jwt.settings import api_settings
 from .serializers import *
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
-from rest_framework import status
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
 
-class UserView(viewsets.ViewSet):
+class UserViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
 
     def list(self, request):
@@ -21,7 +20,7 @@ class UserView(viewsets.ViewSet):
             login(request, user)
             jwt = jwt_encode_handler(jwt_payload_handler(user))
             return Response({'token': jwt})
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"error_code": 401, "error": "登陆失败"})
 
     def create(self, request):
         serializer = UserSerializer(data=request.data)
@@ -33,11 +32,28 @@ class UserView(viewsets.ViewSet):
                 "token": jwt
             }
             return Response(resp)
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({"error_code": 401, "error": "注册失败"})
 
 
-class UserUpdate(viewsets.ViewSet):
+class UserUpdateViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
     def update(self, request):
-        return Response({"a": 1})
+        user = request.user
+        serializer = UserSerializer(user, data=request.data)
+
+        serializer.is_valid()
+        if serializer.is_valid():
+            serializer.save()
+            ret = {
+                "error_code": 0,
+                "data": serializer.data
+            }
+            return Response(ret)
+        return Response(
+            {
+                "error_code": 1,
+                "error": serializer.errors,
+                "data": serializer.data
+            }
+        )

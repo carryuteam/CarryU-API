@@ -26,6 +26,7 @@ class UserProfile(AbstractUser):
         ),
         default='other'
     )
+    grade = models.IntegerField("年级", null=True)
     coin = models.IntegerField("金币", null=True)
     sessionKey = models.TextField("SessionKey")
     password = models.TextField('供admin登陆密码')
