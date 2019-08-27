@@ -16,14 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from carryu import userapi
-from carryu_file.views import ResourceViewSet
 from django.conf.urls import url, include
-from rest_framework import routers
+import carryu_file
 
-router = routers.DefaultRouter()
-router.register(r'resource', ResourceViewSet)
+
+
 urlpatterns = [
-    url(r'^', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url('resource/', include('carryu_file.urls')),
     path('admin/', admin.site.urls),
 ]

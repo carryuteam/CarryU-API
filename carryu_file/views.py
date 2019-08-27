@@ -13,7 +13,6 @@ class ResourceViewSet(viewsets.ModelViewSet):
     serializer_class = ResourceListSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    @action(detail=False, methods=['get'])
     def search(self, request):
         name=request.data.get('name')
         cost=request.data.get('cost')
