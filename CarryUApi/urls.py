@@ -22,4 +22,5 @@ urlpatterns = [
     url('user/', include('users.urls')),
     url('share/', include('share.urls')),
 	url('resource/', include('res.urls')),
+    url('fileupload/', include('fileupload.urls')),
 ]
