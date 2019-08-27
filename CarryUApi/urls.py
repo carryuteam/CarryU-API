@@ -20,4 +20,5 @@ urlpatterns = [
     url('admin/', admin.site.urls),
     url('user/', include('users.urls')),
     url('share/', include('share.urls')),
+    url('fileupload/', include('fileupload.urls')),
 ]
