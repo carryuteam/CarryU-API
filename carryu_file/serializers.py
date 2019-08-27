@@ -10,10 +10,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class ResourceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Resource
-        fields = ['resid', 'author', 'resURL', 'school', 'grade', 'picURLs', 'description', 'create_time', 'update_time', 'tags', 'cost']
+        fields = ['resid', 'name', 'author', 'school', 'grade', 'picURLs', 'description', 'create_time', 'update_time', 'tags', 'cost']
         
 class ResourceListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Resource
-        fields = ['resid', 'name', 'school', 'grade', 'update_time', 'tags', 'cost']        
+        fields = ['resid', 'name', 'author', 'school', 'grade', 'update_time', 'tags', 'cost']        
 
