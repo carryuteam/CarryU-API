@@ -1,7 +1,10 @@
+#!coding=utf8
 from django.contrib.auth.backends import ModelBackend
 from .models import *
 from WechatAPI.Login import WXLogin
 from django.conf import settings
+from datetime import datetime
+from rest_framework_jwt.settings import api_settings
 
 
 class UserBackend(ModelBackend):
@@ -34,3 +37,25 @@ class UserBackend(ModelBackend):
         except Exception as e:
             user = None
         return user
+
+
+def jwt_response_payload_handler(token, user=None, request=None):
+    return {
+        'token': token,
+        'openid': user.openid
+    }
+
+
+def jwt_payload_handler(user):
+
+    payload = {
+        'openid': user.openid,
+        'exp': datetime.utcnow() + api_settings.JWT_EXPIRATION_DELTA
+    }
+    return payload
+
+
+def jwt_get_username_from_payload(payload):
+    openid = payload.get('openid')
+    return openid
+

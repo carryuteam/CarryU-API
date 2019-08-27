@@ -21,4 +21,5 @@ from .views import *
 urlpatterns = [
     url('login', UserView.as_view({'post': 'list'})),
     url('register', UserView.as_view({'post': 'create'})),
+    url('update', UserUpdate.as_view({'post': 'update'}))
 ]
