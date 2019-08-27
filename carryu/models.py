@@ -17,6 +17,7 @@ class User(models.Model):
 class Resource(models.Model):
     resid=models.AutoField(primary_key=True)
     author=models.CharField(max_length=50)
+    name=models.CharField(max_length=50,default="res")
     resURL=models.URLField()
     school=models.CharField(max_length=20)
     grade=models.IntegerField() 
@@ -26,6 +27,7 @@ class Resource(models.Model):
     update_time=models.DateTimeField(default=timezone.now)
     tags=models.TextField()
     cost=models.IntegerField()
+
 
 class ResouceFolder(models.Model):
     userid=models.ForeignKey(User,on_delete=models.CASCADE)
