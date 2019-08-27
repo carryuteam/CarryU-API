@@ -11,7 +11,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-import os
+import os, datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -38,9 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'carryu',
     'rest_framework',
     'users',
+    'share'
 ]
 
 MIDDLEWARE = [
@@ -131,7 +131,8 @@ REST_FRAMEWORK = {
 JWT_AUTH = {
     'JWT_PAYLOAD_HANDLER': 'users.auth.jwt_payload_handler',
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'users.auth.jwt_response_payload_handler',
-    'JWT_PAYLOAD_GET_USERNAME_HANDLER': 'users.auth.jwt_get_username_from_payload'
+    'JWT_PAYLOAD_GET_USERNAME_HANDLER': 'users.auth.jwt_get_username_from_payload',
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=24),
 }
 
 # Internationalization
