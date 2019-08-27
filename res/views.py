@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from carryu.models import User,Resource,ResouceFolder
-from carryu_file.serializers import UserSerializer, ResourceSerializer, ResourceListSerializer
+from res.models import User,Resource,ResouceFolder
+from res.serializers import UserSerializer, ResourceSerializer, ResourceListSerializer, ResouceFolderSerializer
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework import permissions
@@ -42,9 +42,8 @@ class ResourceViewSet(viewsets.ModelViewSet):
         if order:
             if order==1:
                 search_res = Resource.objects.filter(**search_dict).order_by('grade')
-            else if order==2:
-                search_res = Resource.objects.filter(**search_dict).order_by('cost')
-        
+        else:
+            search_res = Resource.objects.filter(**search_dict)
         paginator = Paginator(search_res, pagesize)
         total = paginator.count
 
@@ -78,3 +77,10 @@ class ResourceViewSet(viewsets.ModelViewSet):
             "error_code": 0,
             "resources": serializer.data
         })
+
+class ResFolderViewSet(viewsets.ModelViewSet):
+    queryset = ResouceFolder.objects.all()
+    serializer_class = ResouceFolderSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    def add(self, request):
+        ResouceFolder.add("")

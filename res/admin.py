@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import User
 from .models import Resource
 from .models import ResouceFolder
@@ -6,3 +7,4 @@ from .models import ResouceFolder
 admin.site.register(User)
 admin.site.register(Resource)
 admin.site.register(ResouceFolder)
+# Register your models here.

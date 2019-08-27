@@ -15,13 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from carryu import userapi
 from django.conf.urls import url, include
-import carryu_file
+import res
 
 
 
 urlpatterns = [
-    url('resource/', include('carryu_file.urls')),
+    url('resource/', include('res.urls')),
     path('admin/', admin.site.urls),
 ]

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from carryu.models import User,Resource,ResouceFolder
+from res.models import User,Resource,ResouceFolder
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -15,5 +15,9 @@ class ResourceSerializer(serializers.HyperlinkedModelSerializer):
 class ResourceListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Resource
-        fields = ['resid', 'name', 'author', 'school', 'grade', 'update_time', 'tags', 'cost']        
+        fields = ['resid', 'name', 'author', 'school', 'grade', 'update_time', 'tags', 'cost'] 
 
+class ResouceFolderSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ResouceFolder
+        fields = ['userid', 'resid']
