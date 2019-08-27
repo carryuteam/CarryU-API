@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf.urls import url, include
+import res
 
 urlpatterns = [
     url('admin/', admin.site.urls),
     url('user/', include('users.urls')),
     url('share/', include('share.urls')),
+	url('resource/', include('res.urls')),
 ]
