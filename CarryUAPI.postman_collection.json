@@ -1,0 +1,81 @@
+{
+	"variables": [],
+	"info": {
+		"name": "CarryUAPI",
+		"_postman_id": "c8b31782-a12a-3a19-73a4-c7f49120fc61",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "UserReg",
+			"request": {
+				"url": "http://127.0.0.1:8000/user/register",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "code",
+							"value": "043tUnAy1HFxB904w2Dy1wioAy1tUnAn",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UserLogin",
+			"request": {
+				"url": "http://127.0.0.1:8000/user/login",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "code",
+							"value": "033wuq6i0CjxLv1zcO6i05dq6i0wuq6W",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UserUpdate",
+			"request": {
+				"url": "http://127.0.0.1:8000/user/update",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcGVuaWQiOiJvWTNuSDVTS3BKZm9pUmJUTnFhSUEwYTA3dzJZIiwiZXhwIjoxNTY2OTYzMjAzfQ.ZXJ0mDHZxUsrOVjEn2PoQMDKaJ87FlMqAf2wzRYmKzY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "code",
+							"value": "043tUnAy1HFxB904w2Dy1wioAy1tUnAn",
+							"description": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
