@@ -1,3 +1,3 @@
-JWT 模块使用
-https://github.com/weidwonder/django-jwt-session-auth
-
+# CarryUApi
+## 开发守则
+1. 敏感信息从环境变量中读入
