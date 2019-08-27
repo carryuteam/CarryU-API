@@ -5,6 +5,7 @@ __pycache__/
 
 venv/
 
-CarryUAPI/settings.py
 
 \.DS_Store
+.idea
+*.sqlite3
