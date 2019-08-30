@@ -1,10 +1,11 @@
 from rest_framework import serializers
-from res.models import User,Resource,ResouceFolder
+from res.models import Resource,ResouceFolder
+from users.models import UserProfile
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
+        model = UserProfile
         fields = ['openid', 'coin', 'school', 'grade']
 
 class ResourceSerializer(serializers.HyperlinkedModelSerializer):
@@ -21,3 +22,8 @@ class ResouceFolderSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ResouceFolder
         fields = ['userid', 'resid']
+
+class ResourceURLSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Resource
+        fields = ['resid', 'resURL'] 

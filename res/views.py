@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from res.models import User,Resource,ResouceFolder
-from res.serializers import UserSerializer, ResourceSerializer, ResourceListSerializer, ResouceFolderSerializer
+from res.models import Resource,ResouceFolder
+from res.serializers import UserSerializer, ResourceSerializer, ResourceListSerializer, ResouceFolderSerializer, ResourceURLSerializer
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework import permissions
@@ -77,10 +77,94 @@ class ResourceViewSet(viewsets.ModelViewSet):
             "error_code": 0,
             "resources": serializer.data
         })
+    
+    def upload(self, request):
+        resid = request.data.get('resid')
+        name = request.data.get('name')
+        desc = request.data.get('description')
+        school = request.data.get('school')
+        grade = request.data.get('grade')
+        tags = request.data.get('tags')
+        cost = request.data.get('cost')
+        resurl = request.data.get('resurl')
+        picurls = request.data.get('picurls')
+        uid = request.user.openid
 
+        if school is None:
+            school = 'none'
+        if grade is None:
+            grade = 0
+        
+        if resid is None:
+            try:
+                print(resurl)
+                print(picurls)
+                print(desc)
+                Resource.objects.create(author=uid,resURL=resurl,picURLs=picurls,
+                description=desc,grade=grade,school=school,tags=tags,cost=cost)
+            except BaseException as e:
+                print(str(e))
+                return Response({"error_code": 1})
+
+            obj = Resource.objects.get(resURL=resurl)
+            return Response({
+                "error_code": 0,
+                "data": obj.resid
+            })
+        else:
+            try:
+                User.objects.filter(resid=resid).update(author=uid,resURL=resurl,picURLs=picurls,
+                description=desc,grade=grade,school=school,tags=tags,cost=cost)
+            except BaseException:
+                return Response({"error_code": 1})
+            obj = Resource.objects.get(resURL=resurl)
+            return Response({
+                "error_code": 0,
+                "data": obj.resid
+            })
+        
 class ResFolderViewSet(viewsets.ModelViewSet):
     queryset = ResouceFolder.objects.all()
     serializer_class = ResouceFolderSerializer
     permission_classes = [permissions.IsAuthenticated]
+
     def add(self, request):
-        ResouceFolder.add("")
+        uid=request.user.openid
+        print(uid)
+        print("xxx")
+        rid=request.data.get('resid')
+        cmt=request.data.get('comment')
+        print(uid)
+        if rid is None:
+            return Response({"error_code": 3})
+        if cmt is None:
+            cmt='no comment'
+        try:
+            ResouceFolder.objects.create(userid=uid,resid=rid,comment=cmt) 
+        except BaseException as e:
+            print(str(e))
+            return Response({"error_code": 1})
+        
+        return Response({"error_code": 0})
+
+    def geturl(self, request):
+        uid=request.user.openid
+        print("xsadasdsad")
+        rid=request.GET.get('resid')
+        print(rid)
+        if rid is None:
+            return Response({"error_code": 3})
+        try:
+            now = ResouceFolder.objects.get(userid = uid, resid = rid) 
+        except BaseException:
+            return Response({"error_code": 1})
+        if now is not None:
+            res = Resource.objects.get(resid = rid)
+            serializer = ResourceURLSerializer(res)
+            return Response({
+                "error_code": 0,
+                "data": serializer.data
+            })
+        else:
+            return Response({"error_code": 1})
+        

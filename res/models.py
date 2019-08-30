@@ -18,7 +18,7 @@ class Resource(models.Model):
     resid=models.AutoField(primary_key=True)
     author=models.CharField(max_length=50)
     name=models.CharField(max_length=50,default="res")
-    resURL=models.URLField()
+    resURL=models.CharField(max_length=100)
     school=models.CharField(max_length=20)
     grade=models.IntegerField() 
     picURLs=models.TextField()
@@ -30,9 +30,8 @@ class Resource(models.Model):
 
 
 class ResouceFolder(models.Model):
-    userid=models.ForeignKey(User,on_delete=models.CASCADE)
-    resid=models.ForeignKey(Resource,on_delete=models.CASCADE)
-    class Meta:
-        unique_together=("userid","resid")
+    userid=models.TextField(User)
+    #注意这里user没有和真正的user连起来！
+    resid=models.TextField(Resource)
     add_time=models.DateTimeField(default=timezone.now)
     comment=models.TextField()

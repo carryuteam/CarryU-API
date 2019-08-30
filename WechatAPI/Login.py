@@ -7,6 +7,8 @@ class WXLogin:
     def __init__(self, appid, secret):
         self.appid = appid
         self.secret = secret
+        print(appid)
+        print(secret)
 
     def login(self, code):
         url = "https://api.weixin.qq.com/sns/jscode2session"
