@@ -5,7 +5,9 @@ from rest_framework import routers
 urlpatterns = [
     url('search',ResourceViewSet.as_view({"get":"search"})),
     url('upload',ResourceViewSet.as_view({"post":"upload"})),
-    url('get',ResourceViewSet.as_view({"get":"details"})),
+    url('info',ResourceViewSet.as_view({"get":"details"})),
     url('takeurl',ResFolderViewSet.as_view({"get":"geturl"})),
     url('add',ResFolderViewSet.as_view({"post":"add"})),
+    url('getf',ResFolderViewSet.as_view({"get":"searchfolder"})),
+    url('delfolder',ResFolderViewSet.as_view({"post":"delfolder"})),
 ]

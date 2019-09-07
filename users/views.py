@@ -57,3 +57,22 @@ class UserUpdateViewSet(viewsets.ViewSet):
                 "data": serializer.data
             }
         )
+    
+    def getdetail(self, request):
+        print("123123123")
+        user = request.user
+        print("123123123")
+        serializer = FullUserSerializer(user)
+        return Response({
+            "error_code": 0,
+            "resources": serializer.data
+        })
+    
+    def addcoin(self, request):
+        user = request.user
+        if user.coin is None:
+            user.coin = 10
+        user.coin += 1000
+        user.save()
+        return Response({"error_code": 0})
+    

@@ -32,4 +32,9 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ['code', 'nickName', 'avatarUrl', 'description', 'school', 'grade']
+        fields = ['code', 'nickName', 'avatarUrl', 'description', 'school', 'grade', 'gender']
+
+class FullUserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['nickName', 'avatarUrl', 'description', 'school', 'grade', 'gender', 'coin', 'create_time', 'login_time']

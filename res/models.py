@@ -30,8 +30,10 @@ class Resource(models.Model):
 
 
 class ResouceFolder(models.Model):
-    userid=models.TextField(User)
+    userid=models.TextField()
     #注意这里user没有和真正的user连起来！
-    resid=models.TextField(Resource)
+    resid=models.TextField()
     add_time=models.DateTimeField(default=timezone.now)
     comment=models.TextField()
+    class Meta:
+        unique_together=("userid","resid")

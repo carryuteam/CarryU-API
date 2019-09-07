@@ -27,3 +27,4 @@ class ResourceURLSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Resource
         fields = ['resid', 'resURL'] 
+        

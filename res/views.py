@@ -62,7 +62,10 @@ class ResourceViewSet(viewsets.ModelViewSet):
         })
 
     def details(self, request):
-        id = request.GET.get('resid')
+        try:
+            id = request.GET.get('resid')
+        except BaseException:
+            return Response({"error_code": 1})
         print(id)
         if id is None:
             return Response({"error_code": 3})
@@ -113,7 +116,7 @@ class ResourceViewSet(viewsets.ModelViewSet):
             })
         else:
             try:
-                User.objects.filter(resid=resid).update(author=uid,resURL=resurl,picURLs=picurls,
+                Resource.objects.filter(resid=resid).update(author=uid,resURL=resurl,picURLs=picurls,
                 description=desc,grade=grade,school=school,tags=tags,cost=cost)
             except BaseException:
                 return Response({"error_code": 1})
@@ -134,17 +137,24 @@ class ResFolderViewSet(viewsets.ModelViewSet):
         print("xxx")
         rid=request.data.get('resid')
         cmt=request.data.get('comment')
-        print(uid)
+        print(rid)
         if rid is None:
             return Response({"error_code": 3})
         if cmt is None:
             cmt='no comment'
+        res = Resource.objects.get(resid=rid)
+        if res is None:
+            return Response({"error_code": 1})
+        if request.user.coin < res.cost:
+            return Response({"error_code": 4})
         try:
             ResouceFolder.objects.create(userid=uid,resid=rid,comment=cmt) 
         except BaseException as e:
             print(str(e))
             return Response({"error_code": 1})
-        
+        usr = request.user
+        usr.coin -= res.cost
+        usr.save()
         return Response({"error_code": 0})
 
     def geturl(self, request):
@@ -167,4 +177,36 @@ class ResFolderViewSet(viewsets.ModelViewSet):
             })
         else:
             return Response({"error_code": 1})
+
+    def searchfolder(self, request):
+        uid = request.user.openid
+        res = ResouceFolder.objects.all()
+        #少个分页这里 先不写了
+        print("xxxxx")
+        print(uid)
+        print(len(res))
+        ser = ResouceFolderSerializer(res, many=True)
+        return Response({
+        "error_code": 0,
+        "data":ser.data
+        })
+    
+    def delfolder(self, request):
+        uid = request.user.openid
+        rid = request.data.get('resid')
+        if rid is None:
+            return Response({"error_code": 3})
+
+        res = ResouceFolder.objects.filter(userid=uid, resid=rid)
+
+        if len(res) == 0:
+            return Response({"error_code": 1})
+        print("tt")
+
+        try:
+            ResouceFolder.objects.filter(userid=uid, resid=rid).delete()
+        except BaseException:
+            return Response({"error_code": 1})
+
+        return Response({"error_code": 0})
         
