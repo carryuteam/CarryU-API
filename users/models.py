@@ -30,6 +30,7 @@ class UserProfile(AbstractUser):
     coin = models.IntegerField("金币", default=10)
     sessionKey = models.TextField("SessionKey")
     password = models.TextField('供admin登陆密码')
-
+    username=models.TextField('复写先前的username')
+    USERNAME_FIELD = 'openid'
     objects = UserManager()
 

@@ -31,6 +31,7 @@ class UserViewSet(viewsets.ViewSet):
 
     def create(self, request):
         serializer = UserSerializer(data=request.data)
+        print(serializer.is_valid())
         if serializer.is_valid():
             user = serializer.save()
             login(request, user)
@@ -47,9 +48,9 @@ class UserUpdateViewSet(viewsets.ViewSet):
 
     def update(self, request):
         user = request.user
-        serializer = UserSerializer(user, data=request.data)
+        print(user.openid)
+        serializer = ChangeUserSerializer(user, data=request.data)
 
-        serializer.is_valid()
         if serializer.is_valid():
             serializer.save()
             ret = {
