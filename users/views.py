@@ -20,10 +20,13 @@ class UserViewSet(viewsets.ViewSet):
         is_first=[0]
         user = authenticate(code=code,is_first=is_first)
         print("xxx")
+        print(is_first[2])
         if user:
             login(request, user)
             jwt = jwt_encode_handler(jwt_payload_handler(user))
             return Response({'error_code':0,'data':{'token': jwt,'openid':user.openid,'is_first': is_first[1]}})
+        elif is_first[1]==1:
+            return Response({'error_code':0,'data':{'openid':is_first[2],'is_first': is_first[1]}})
         return Response({"error_code": 401, "error": "登陆失败"})
 
     def create(self, request):

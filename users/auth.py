@@ -42,6 +42,7 @@ class UserBackend(ModelBackend):
         except Exception as e:
             user = None
         is_first.append(nowflag)
+        is_first.append(openid)
         print(is_first)
         return user
 
