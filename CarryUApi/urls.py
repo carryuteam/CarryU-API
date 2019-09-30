@@ -18,9 +18,9 @@ from django.conf.urls import url, include
 import res
 
 urlpatterns = [
-    url('admin/', admin.site.urls),
-    url('user/', include('users.urls')),
-    url('share/', include('share.urls')),
-	url('resource/', include('res.urls')),
-    url('fileupload/', include('fileupload.urls')),
+    url(r'^admin/', admin.site.urls),
+    url(r'^api/user/', include('users.urls')),
+    url(r'^api/share/', include('share.urls')),
+	url(r'^api/resource/', include('res.urls')),
+    url(r'^api/fileupload/', include('fileupload.urls')),
 ]

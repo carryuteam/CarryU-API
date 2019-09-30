@@ -63,9 +63,7 @@ class UserUpdateViewSet(viewsets.ViewSet):
         )
     
     def getdetail(self, request):
-        print("123123123")
         user = request.user
-        print("123123123")
         serializer = FullUserSerializer(user)
         return Response({
             "error_code": 0,

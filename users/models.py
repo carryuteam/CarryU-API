@@ -5,36 +5,6 @@ from django.utils import timezone
 
 
 class UserManager(models.Manager):
-    def create_user(self, username, password=None, email=None):
-        """
-        Creates and saves a User with the given 
-        user name and password.
-        """
-        if not username:
-            raise ValueError(_('Users must have an username'))
- 
-        user = self.model(
-            username=username,
-        )
- 
-        user.set_password(password)
-        user.is_admin = False
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, username, password, email):
-        """
-        Creates and saves a superuser with the given  
-        user name and password.
-        """
-        user = self.create_user(
-            password=password,
-            username=username
-        )
-        user.is_admin = True
-        user.save(using=self._db)
-        return user
-    
     def get_by_natural_key(self, openid):
         return self.get(openid=openid)
 

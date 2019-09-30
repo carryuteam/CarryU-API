@@ -2,17 +2,11 @@ from django.db import models
 import django.utils.timezone as timezone
 
 # Create your models here.
-class User(models.Model):
-    openid=models.CharField(max_length=50,primary_key=True)
-    nickName=models.CharField(max_length=30)
-    avatarUrl=models.URLField()
-    description=models.TextField()
-    create_time=models.DateTimeField(default=timezone.now)
-    login_time=models.DateTimeField(default=timezone.now)
-    school=models.CharField(max_length=20)
-    grade=models.IntegerField()
-    coin=models.IntegerField()
-
+class ResouceTag(models.Model):
+    tag = models.CharField("tag名称",max_length=40)
+    desc = models.TextField("描述，可选")
+    picURL = models.TextField("图片，可选")
+    #此处会有自增主键
 
 class Resource(models.Model):
     resid=models.AutoField(primary_key=True)
@@ -37,3 +31,14 @@ class ResouceFolder(models.Model):
     comment=models.TextField()
     class Meta:
         unique_together=("userid","resid")
+
+class ResouceDic(models.Model):
+    dicid=models.AutoField("文件夹id",primary_key = True)
+    userid=models.TextField("user的openid")
+    name=models.TextField("文件夹名字")
+    parent=models.TextField("父级目录id")
+
+
+
+
+

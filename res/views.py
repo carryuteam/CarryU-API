@@ -25,8 +25,6 @@ class ResourceViewSet(viewsets.ModelViewSet):
 
         
         print(pagesize)
-        if pagesize is None:
-            return Response({"error_code": 3})
 
         search_dict = dict()
         if name:
@@ -44,6 +42,15 @@ class ResourceViewSet(viewsets.ModelViewSet):
                 search_res = Resource.objects.filter(**search_dict).order_by('grade')
         else:
             search_res = Resource.objects.filter(**search_dict)
+
+        if pagesize is None:
+            serializer = ResourceListSerializer(search_res, many=True)
+            return Response({
+                "error_code": 0,
+                "resources": serializer.data,
+                "total": total
+            })
+
         paginator = Paginator(search_res, pagesize)
         total = paginator.count
 

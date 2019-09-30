@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from res.models import Resource,ResouceFolder
+from res.models import Resource,ResouceFolder,ResouceTag
 from users.models import UserProfile
-
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -27,4 +26,9 @@ class ResourceURLSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Resource
         fields = ['resid', 'resURL'] 
+
+class TagSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ResouceTag
+        fields = ['id', 'tag','desc', 'picurl'] 
         
