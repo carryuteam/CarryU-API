@@ -8,7 +8,7 @@ from rest_framework_jwt.settings import api_settings
 
 
 class UserBackend(ModelBackend):
-    def authenticate(self, username=None, password=None, code=None, openid=None, **kwargs):
+    def authenticate(self, username=None, password=None, code=None, openid=None, is_first=None, **kwargs):
         """
         :param username: 用于admin登陆
         :param password: 用于admin登陆
@@ -17,7 +17,11 @@ class UserBackend(ModelBackend):
         :param kwargs:
         :return:
         """
+        print("testadmin!!!")
+        is_first[0]=0
+        nowflag=0
         try:
+            print("testadmin!!!")
             if username:
                 user = UserProfile.objects.get(username=username)
                 print(password)
@@ -31,11 +35,14 @@ class UserBackend(ModelBackend):
                 try:
                     user = UserProfile.objects.get(openid=openid)
                 except Exception as e:
+                    nowflag=1
                     user = None
             else:
                 user = None
         except Exception as e:
             user = None
+        is_first.append(nowflag)
+        print(is_first)
         return user
 
 

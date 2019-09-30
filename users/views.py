@@ -13,13 +13,17 @@ jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 class UserViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
 
+
+
     def list(self, request):
         code = request.data.get("code")
-        user = authenticate(code=code)
+        is_first=[0]
+        user = authenticate(code=code,is_first=is_first)
+        print("xxx")
         if user:
             login(request, user)
             jwt = jwt_encode_handler(jwt_payload_handler(user))
-            return Response({'token': jwt})
+            return Response({'error_code':0,'data':{'token': jwt,'openid':user.openid,'is_first': is_first[1]}})
         return Response({"error_code": 401, "error": "登陆失败"})
 
     def create(self, request):
@@ -65,7 +69,7 @@ class UserUpdateViewSet(viewsets.ViewSet):
         serializer = FullUserSerializer(user)
         return Response({
             "error_code": 0,
-            "resources": serializer.data
+            "data": serializer.data
         })
     
     def addcoin(self, request):

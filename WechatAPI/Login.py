@@ -19,5 +19,6 @@ class WXLogin:
             "js_code": code
         }
         ret = requests.get(url, params=param)
+        print(ret.text)
         ret = json.loads(ret.text)
         return ret
