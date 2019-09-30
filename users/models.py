@@ -17,15 +17,7 @@ class UserProfile(AbstractUser):
     create_time = models.DateTimeField("创建时间", default=timezone.now)
     login_time = models.DateTimeField("上次登陆时间", default=timezone.now)
     school = models.IntegerField("学院", null=True)
-    gender = models.CharField(
-        max_length=6,
-        choices=(
-            ('male', '男'),
-            ('female', '女'),
-            ('other', '其他')
-        ),
-        default='other'
-    )
+    gender = models.IntegerField("性别", default=2)
     grade = models.IntegerField("年级", null=True)
     coin = models.IntegerField("金币", default=10)
     sessionKey = models.TextField("SessionKey")
