@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework import permissions
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from rest_framework.decorators import action
+from res.tags import ResourceTagViewSet
 # Create your views here.
 class ResourceViewSet(viewsets.ModelViewSet):
     queryset = Resource.objects.all()
@@ -47,8 +48,7 @@ class ResourceViewSet(viewsets.ModelViewSet):
             serializer = ResourceListSerializer(search_res, many=True)
             return Response({
                 "error_code": 0,
-                "resources": serializer.data,
-                "total": total
+                "data": serializer.data
             })
 
         paginator = Paginator(search_res, pagesize)
@@ -64,7 +64,7 @@ class ResourceViewSet(viewsets.ModelViewSet):
         serializer = ResourceListSerializer(res, many=True)
         return Response({
             "error_code": 0,
-            "resources": serializer.data,
+            "data": serializer.data,
             "total": total
         })
 
@@ -82,10 +82,13 @@ class ResourceViewSet(viewsets.ModelViewSet):
             return Response({"error_code": 1})
         
         print("ok")
+        ResourceTagViewSet.upRes(res)
+        res = Resource.objects.get(resid=id)
+
         serializer = ResourceSerializer(res)
         return Response({
             "error_code": 0,
-            "resources": serializer.data
+            "data": serializer.data
         })
     
     def upload(self, request):
@@ -110,6 +113,7 @@ class ResourceViewSet(viewsets.ModelViewSet):
                 print(resurl)
                 print(picurls)
                 print(desc)
+                ResourceTagViewSet.addStr(tags)
                 Resource.objects.create(author=uid,resURL=resurl,picURLs=picurls,
                 description=desc,grade=grade,school=school,tags=tags,cost=cost)
             except BaseException as e:
@@ -123,6 +127,7 @@ class ResourceViewSet(viewsets.ModelViewSet):
             })
         else:
             try:
+                ResourceTagViewSet.addStr(tags)
                 Resource.objects.filter(resid=resid).update(author=uid,resURL=resurl,picURLs=picurls,
                 description=desc,grade=grade,school=school,tags=tags,cost=cost)
             except BaseException:

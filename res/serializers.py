@@ -28,7 +28,8 @@ class ResourceURLSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['resid', 'resURL'] 
 
 class TagSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = ResouceTag
-        fields = ['id', 'tag','desc', 'picurl'] 
+        fields = ['tag'] 
         

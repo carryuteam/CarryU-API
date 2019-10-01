@@ -3,9 +3,7 @@ import django.utils.timezone as timezone
 
 # Create your models here.
 class ResouceTag(models.Model):
-    tag = models.CharField("tag名称",max_length=40)
-    desc = models.TextField("描述，可选")
-    picURL = models.TextField("图片，可选")
+    tag = models.CharField("tag名称",max_length=40, primary_key=True)
     #此处会有自增主键
 
 class Resource(models.Model):
