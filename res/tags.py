@@ -35,7 +35,7 @@ class ResourceTagViewSet(viewsets.ModelViewSet):
     def searchTag(self, request):
         name=request.GET.get('tag')
         if name is not None:
-            search_res = ResouceTag.objects.filter(tag=name__contains)
+            search_res = ResouceTag.objects.filter(tag__contains=name)
             serializer = TagSerializer(search_res, many=True)
             return Response({
                 "error_code": 0,
@@ -44,27 +44,26 @@ class ResourceTagViewSet(viewsets.ModelViewSet):
         return Response({"error_code": 1})
 
     def transTag(tagstring):
-        arr=tagstring.split(';')
+        arr=list(filter(None,tagstring.split(',')))
         ret=[]
         for tag in arr:
             try:
                 now=ResouceTag.objects.get(tag=tag) 
             except BaseException:
+                print("未找到")
                 continue
             ret.append(now)
+        print(ret)
         return ret
 
     def transStr(tags):
-        ret=""
-        if len(tags)==0:
-            return ret
-        ret=ret+tags[0].tag
+        ret=","
         for tag in tags:
-            ret=ret+';'+tag.tag
+            ret=ret+tag.tag+','
         return ret
 
     def addStr(tagstring):
-        arr=tagstring.split(';')
+        arr=list(filter(None,tagstring.split(',')))
         for tag in arr:
             try:
                 now=ResouceTag.objects.get_or_create(tag=tag)
@@ -74,8 +73,8 @@ class ResourceTagViewSet(viewsets.ModelViewSet):
         
     def upRes(res):
         tagstring=res.tags
-        arr=transTag(tagstring)
-        tagstring=transTag(arr)
+        arr=ResourceTagViewSet.transTag(tagstring)
+        tagstring=ResourceTagViewSet.transStr(arr)
         res.tags=tagstring
         res.save()
     

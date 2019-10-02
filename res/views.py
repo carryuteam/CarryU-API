@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Q
 from rest_framework.response import Response
 from res.models import Resource,ResouceFolder
 from res.serializers import UserSerializer, ResourceSerializer, ResourceListSerializer, ResouceFolderSerializer, ResourceURLSerializer
@@ -14,6 +15,12 @@ class ResourceViewSet(viewsets.ModelViewSet):
     serializer_class = ResourceListSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def refresh(self, request):
+        res=Resource.objects.all()
+        for now in res:
+            ResourceTagViewSet.upRes(now)
+        return Response({"error_code": 0})
+    
     def search(self, request):
         name=request.GET.get('name')
         cost=request.GET.get('cost')
@@ -23,11 +30,12 @@ class ResourceViewSet(viewsets.ModelViewSet):
         page=request.GET.get('page')
         pagesize=request.GET.get('pagesize')
         order=request.GET.get('order')
-
+        
         
         print(pagesize)
 
         search_dict = dict()
+        args=Q()
         if name:
             search_dict['name'] = name
         if cost:
@@ -37,12 +45,22 @@ class ResourceViewSet(viewsets.ModelViewSet):
         if grade:
             search_dict['grade'] = grade
 
+
+        if tags:
+            arr=list(filter(None,tags.split(',')))
+            print(arr)
+            args.connector='OR'
+            for tag in arr:
+                print(tag)
+                args.children.append(('tags__icontains',','+tag+','))
+
+
         search_res=None
         if order:
             if order==1:
-                search_res = Resource.objects.filter(**search_dict).order_by('grade')
+                search_res = Resource.objects.filter(args,**search_dict).order_by('grade')
         else:
-            search_res = Resource.objects.filter(**search_dict)
+            search_res = Resource.objects.filter(args,**search_dict)
 
         if pagesize is None:
             serializer = ResourceListSerializer(search_res, many=True)
