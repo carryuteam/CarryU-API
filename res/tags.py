@@ -14,6 +14,8 @@ class ResourceTagViewSet(viewsets.ModelViewSet):
 
     def addTag(self, request):
         tag = request.data.get('tag')
+        if tag is None:
+            return Response({"error_code": 3})            
         ResouceTag.objects.get_or_create(tag=tag)
         return Response({"error_code": 0})
     
@@ -31,6 +33,7 @@ class ResourceTagViewSet(viewsets.ModelViewSet):
                     "data": serializer.data
                 })
             return Response({"error_code": 1})
+        return Response({"error_code": 3})
 
     def searchTag(self, request):
         name=request.GET.get('tag')
@@ -41,8 +44,18 @@ class ResourceTagViewSet(viewsets.ModelViewSet):
                 "error_code": 0,
                 "data": serializer.data
             })
-        return Response({"error_code": 1})
-
+        return Response({"error_code": 3})
+    
+    def delTag(self, request):
+        tag=request.data.get('tag')
+        if tag is None:
+            return Response({"error_code": 1})
+        try:
+            ResouceTag.objects.get(tag=tag).delete()
+        except BaseException as e:
+            return Response({"error_code": 3})    
+        return Response({"error_code": 0})
+                     
     def transTag(tagstring):
         arr=list(filter(None,tagstring.split(',')))
         ret=[]

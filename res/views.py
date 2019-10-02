@@ -37,7 +37,7 @@ class ResourceViewSet(viewsets.ModelViewSet):
         search_dict = dict()
         args=Q()
         if name:
-            search_dict['name'] = name
+            search_dict['name__icontains'] = name
         if cost:
             search_dict['cost__lte'] = cost
         if school:
@@ -49,7 +49,7 @@ class ResourceViewSet(viewsets.ModelViewSet):
         if tags:
             arr=list(filter(None,tags.split(',')))
             print(arr)
-            args.connector='OR'
+            args.connector='AND'
             for tag in arr:
                 print(tag)
                 args.children.append(('tags__icontains',','+tag+','))
@@ -70,7 +70,7 @@ class ResourceViewSet(viewsets.ModelViewSet):
             })
 
         paginator = Paginator(search_res, pagesize)
-        total = paginator.count
+        total = paginator.num_pages
 
         try:
             res = paginator.page(page)
@@ -108,6 +108,17 @@ class ResourceViewSet(viewsets.ModelViewSet):
             "error_code": 0,
             "data": serializer.data
         })
+    
+    def delRes(self, request):
+        resid=request.data.get('resid')
+        if resid is None:
+            return Response({"error_code": 1})
+        try:
+            Resource.objects.get(resid=resid).delete()
+        except BaseException as e:
+            print('repr(e):'+ repr(e))
+            return Response({"error_code": 3})    
+        return Response({"error_code": 0})      
     
     def upload(self, request):
         resid = request.data.get('resid')
