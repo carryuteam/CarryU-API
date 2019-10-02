@@ -26,10 +26,11 @@ SECRET_KEY = '-!0%o&eqntfka1o5=xb@e)_03cbsbmh^g-6=8at2*i4=lgkg&n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','[:: 1]', '152.136.103.106']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','[:: 1]', '152.136.103.106','buptcarryu.club']
 
 
 # Application definition
+SECURE_SSL_REDIRECT = False
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "sslserver",
     'rest_framework',
     'users',
     'share',
