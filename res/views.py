@@ -9,6 +9,7 @@ from rest_framework import permissions
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from rest_framework.decorators import action
 from res.tags import ResourceTagViewSet
+from res.score import ResourceCommentViewSet
 # Create your views here.
 class ResourceViewSet(viewsets.ModelViewSet):
     queryset = Resource.objects.all()
@@ -19,6 +20,8 @@ class ResourceViewSet(viewsets.ModelViewSet):
         res=Resource.objects.all()
         for now in res:
             ResourceTagViewSet.upRes(now)
+            ResourceCommentViewSet.upRes(now)
+
         return Response({"error_code": 0})
     
     def search(self, request):
@@ -57,8 +60,21 @@ class ResourceViewSet(viewsets.ModelViewSet):
 
         search_res=None
         if order:
-            if order==1:
-                search_res = Resource.objects.filter(args,**search_dict).order_by('grade')
+            print(order)
+            if order=='1':
+                search_res = Resource.objects.filter(args,**search_dict).order_by('cost')
+            elif order=='2':
+                search_res = Resource.objects.filter(args,**search_dict).order_by('-cost')
+            elif order=='3':
+                search_res = Resource.objects.filter(args,**search_dict).order_by('update_time')
+            elif order=='4':
+                search_res = Resource.objects.filter(args,**search_dict).order_by('-update_time')
+            elif order=='5':
+                search_res = Resource.objects.filter(args,**search_dict).order_by('score')
+            elif order=='6':
+                search_res = Resource.objects.filter(args,**search_dict).order_by('-score')
+            else:
+                return Response({"error_code": 2})                      
         else:
             search_res = Resource.objects.filter(args,**search_dict)
 

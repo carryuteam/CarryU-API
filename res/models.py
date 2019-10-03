@@ -19,6 +19,7 @@ class Resource(models.Model):
     update_time=models.DateTimeField(default=timezone.now)
     tags=models.TextField()
     cost=models.IntegerField()
+    score=models.FloatField(default=4.5)
 
 
 class ResouceFolder(models.Model):
@@ -44,6 +45,14 @@ class ResouceDic(models.Model):
     userid=models.TextField("user的openid")
     name=models.TextField("文件夹名字")
     parent=models.TextField("父级目录id")
+
+class ResouceComment(models.Model):
+    #这里会有个自增的id
+    userid=models.CharField(max_length=50)
+    resid=models.CharField(max_length=50)
+    content=models.TextField()
+    score=models.FloatField()#满分5分
+    create_time=models.DateTimeField(default=timezone.now)
 
 
 

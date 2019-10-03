@@ -29,6 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost','127.0.0.1','[:: 1]', '152.136.103.106','buptcarryu.club']
 
 
+
 # Application definition
 SECURE_SSL_REDIRECT = False
 
