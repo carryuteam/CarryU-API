@@ -12,7 +12,7 @@ class Resource(models.Model):
     name=models.CharField(max_length=50,default="res")
     resURL=models.CharField(max_length=100)
     school=models.CharField(max_length=20)
-    grade=models.IntegerField() 
+    grade=models.IntegerField()
     picURLs=models.TextField()
     description=models.TextField()
     create_time=models.DateTimeField(default=timezone.now)
@@ -27,8 +27,17 @@ class ResouceFolder(models.Model):
     resid=models.TextField()
     add_time=models.DateTimeField(default=timezone.now)
     comment=models.TextField()
+    is_buy=models.IntegerField(default=0)
     class Meta:
         unique_together=("userid","resid")
+
+'''
+class Course(models.Model):
+    id=models.CharField(max_length=30)
+    name=models.TextField()
+    school=models.CharField(max_length=20)
+    grade=models.IntegerField()
+'''
 
 class ResouceDic(models.Model):
     dicid=models.AutoField("文件夹id",primary_key = True)

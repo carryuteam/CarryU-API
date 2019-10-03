@@ -9,14 +9,17 @@ urlpatterns = [
     url(r'^delres/',ResourceViewSet.as_view({"post":"delRes"})),
     url(r'^getdetail/',ResourceViewSet.as_view({"get":"details"})),
     url(r'^refresh/',ResourceViewSet.as_view({"post":"refresh"})),
-    
     url(r'^geturl/',ResFolderViewSet.as_view({"get":"geturl"})),
-    url(r'^addfolder/',ResFolderViewSet.as_view({"post":"add"})),
-    url(r'^getfolder/',ResFolderViewSet.as_view({"get":"searchfolder"})),
-    url(r'^delfolder/',ResFolderViewSet.as_view({"post":"delfolder"})),
+    url(r'^addbuy/',ResFolderViewSet.as_view({"post":"add_and_buy"})),
 
-    url(r'^addtag/',ResourceTagViewSet.as_view({"post":"addTag"})),
-    url(r'^deltag/',ResourceTagViewSet.as_view({"post":"delTag"})),
-    url(r'^gettag/',ResourceTagViewSet.as_view({"get":"getTag"})),
-    url(r'^searchtag/',ResourceTagViewSet.as_view({"get":"searchTag"})),
+    url(r'^folder/add/',ResFolderViewSet.as_view({"post":"add"})),
+    url(r'^folder/get/',ResFolderViewSet.as_view({"get":"getfolder"})),
+    url(r'^folder/del/',ResFolderViewSet.as_view({"post":"delfolder"})),
+    url(r'^folder/buy/',ResFolderViewSet.as_view({"post":"buy"})),
+
+
+    url(r'^tag/add/',ResourceTagViewSet.as_view({"post":"addTag"})),
+    url(r'^tag/del/',ResourceTagViewSet.as_view({"post":"delTag"})),
+    url(r'^tag/get/',ResourceTagViewSet.as_view({"get":"getTag"})),
+    url(r'^tag/search/',ResourceTagViewSet.as_view({"get":"searchTag"})),
 ]

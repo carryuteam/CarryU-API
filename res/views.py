@@ -172,6 +172,29 @@ class ResFolderViewSet(viewsets.ModelViewSet):
     serializer_class = ResouceFolderSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def add_and_buy(self, request):
+        usr=request.user
+        uid=request.user.openid
+        rid=request.data.get('resid')
+        cmt=request.data.get('comment')
+        if rid is None:
+            return Response({"error_code": 3})
+        if cmt is None:
+            cmt='no comment'
+        try:
+            res = Resource.objects.get(resid=rid)
+        except BaseException as e:
+            return Response({"error_code": 1})
+        if usr.coin<res.cost:
+            return Response({"error_code": 5})
+        try:
+            ResouceFolder.objects.create(userid=uid,resid=rid,comment=cmt,is_buy=1) 
+        except BaseException as e:
+            return Response({"error_code": 4})            
+        usr.coin -= res.cost
+        usr.save()
+        return Response({"error_code": 0})
+
     def add(self, request):
         uid=request.user.openid
         print(uid)
@@ -186,18 +209,37 @@ class ResFolderViewSet(viewsets.ModelViewSet):
         res = Resource.objects.get(resid=rid)
         if res is None:
             return Response({"error_code": 1})
-        if request.user.coin < res.cost:
-            return Response({"error_code": 4})
         try:
             ResouceFolder.objects.create(userid=uid,resid=rid,comment=cmt) 
         except BaseException as e:
             print(str(e))
-            return Response({"error_code": 1})
-        usr = request.user
-        usr.coin -= res.cost
-        usr.save()
+            return Response({"error_code": 4})
         return Response({"error_code": 0})
 
+    def buy(self, request):
+        uid=request.user.openid
+        rid=request.data.get('resid')
+        if rid is None:
+            return Response({"error_code": 3})
+        try:
+            now = ResouceFolder.objects.get(userid = uid, resid = rid) 
+        except BaseException:
+            return Response({"error_code": 1})
+        if now is not None:    
+            if now.is_buy==1:
+                return  Response({"error_code": 4})
+            else:
+                usr = request.user
+                cost=Resource.objects.get(resid=rid).cost
+                if usr.coin<cost:
+                    return  Response({"error_code": 5})
+                usr.coin -= cost
+                usr.save()
+                now.is_buy=1
+                now.save()
+                return Response({"error_code": 0})
+        return Response({"error_code": 1})
+    
     def geturl(self, request):
         uid=request.user.openid
         print("xsadasdsad")
@@ -210,6 +252,8 @@ class ResFolderViewSet(viewsets.ModelViewSet):
         except BaseException:
             return Response({"error_code": 1})
         if now is not None:
+            if now.is_buy==0:
+                return Response({"error_code": 4})
             res = Resource.objects.get(resid = rid)
             serializer = ResourceURLSerializer(res)
             return Response({
@@ -219,13 +263,16 @@ class ResFolderViewSet(viewsets.ModelViewSet):
         else:
             return Response({"error_code": 1})
 
-    def searchfolder(self, request):
-        uid = request.user.openid
-        res = ResouceFolder.objects.all()
-        #少个分页这里 先不写了
-        print("xxxxx")
-        print(uid)
-        print(len(res))
+    def getfolder(self, request):
+        userid = request.user.openid
+        is_buy= request.GET.get('is_buy')
+
+        res=None
+        if is_buy is None:
+            res = ResouceFolder.objects.filter(userid=userid)
+        else:
+            res=ResouceFolder.objects.filter(userid=userid,is_buy=is_buy)
+
         ser = ResouceFolderSerializer(res, many=True)
         return Response({
         "error_code": 0,
@@ -242,7 +289,6 @@ class ResFolderViewSet(viewsets.ModelViewSet):
 
         if len(res) == 0:
             return Response({"error_code": 1})
-        print("tt")
 
         try:
             ResouceFolder.objects.filter(userid=uid, resid=rid).delete()
@@ -250,4 +296,6 @@ class ResFolderViewSet(viewsets.ModelViewSet):
             return Response({"error_code": 1})
 
         return Response({"error_code": 0})
+
+    
         

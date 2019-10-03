@@ -18,9 +18,15 @@ class ResourceListSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['resid', 'name', 'author', 'school', 'grade', 'update_time', 'tags', 'cost'] 
 
 class ResouceFolderSerializer(serializers.HyperlinkedModelSerializer):
+
+    def to_representation(self, obj):
+        data = super(ResouceFolderSerializer, self).to_representation(obj)
+        data['resource'] = ResourceListSerializer(Resource.objects.get(resid=obj.resid)).data
+        return data
+    
     class Meta:
         model = ResouceFolder
-        fields = ['userid', 'resid']
+        fields = ['userid', 'resid', 'is_buy', 'comment', 'add_time']
 
 class ResourceURLSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

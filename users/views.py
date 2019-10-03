@@ -67,7 +67,15 @@ class UserUpdateViewSet(viewsets.ViewSet):
         )
     
     def getdetail(self, request):
-        user = request.user
+        id=request.GET.get('openid')
+        user=None
+        if id is None:
+            user = request.user
+        else:
+            try:
+                user = UserProfile.objects.get(openid=id)
+            except BaseException:
+                return Response({"error_code": 1})
         serializer = FullUserSerializer(user)
         return Response({
             "error_code": 0,
