@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^api/share/', include('share.urls')),
 	url(r'^api/resource/', include('res.urls')),
     url(r'^api/fileupload/', include('fileupload.urls')),
+    url(r'^api/school/', include('school.urls')),
 ]

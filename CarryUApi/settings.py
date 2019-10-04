@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'share',
 	'res',
     'fileupload',
+    'school',
 ]
 
 MIDDLEWARE = [
